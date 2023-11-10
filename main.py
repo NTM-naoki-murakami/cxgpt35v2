@@ -14,16 +14,16 @@ async def webhook(request: Request):
     req = await request.json()
     query = req.get('fulfillmentInfo').get('tag')
 
-    # openaiのクライアントを初期化
+    # OpenAIのAPIクライアントを初期化
     client = openai.OpenAI(api_key=openai.api_key)
 
-    # OpenAIのAPIを使用してChatGPTに問い合わせ
+    # ChatGPTに問い合わせを行う
     response = await client.chat.completions.create(
-        model="gpt-4",  # モデルの指定
+        model="gpt-4",
         messages=[{"role": "user", "content": query}]
     )
 
-    # OpenAIの応答をDialogflow CXに返す
+    # 応答をDialogflow CXに返す
     messages = response.choices[0].message.content if response.choices else ""
     return JSONResponse({
         "fulfillment_response": {

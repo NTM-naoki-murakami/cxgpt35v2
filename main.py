@@ -14,8 +14,9 @@ async def webhook(request: Request):
     req = await request.json()
     query = req.get('fulfillmentInfo').get('tag')
 
-    # OpenAIのAPIを使用してChatGPTに問い合わせ（新しいAPIメソッドを使用）
-    response = await openai.ChatCompletion.create(
+    # 非同期OpenAIクライアントを使用してChatGPTに問い合わせ
+    client = openai.AsyncOpenAI(api_key=openai.api_key)
+    response = await client.chat.completions.create(
         model="gpt-4",  # モデルの指定（gpt-4や他のモデル）
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
